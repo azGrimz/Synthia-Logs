@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Scape - Análise de Logs</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0a0a0a;
+      color: #00ffcc;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .container {
+      width: 90%;
+      max-width: 800px;
+      padding: 20px;
+      background: rgba(0, 255, 204, 0.05);
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.8em;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      animation: glitch 2s linear infinite;
+    }
+    .code-area {
+      background: #1a1a1a;
+      padding: 15px;
+      border: 1px solid #00ffcc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+      font-size: 0.9em;
+    }
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      background: #111;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      padding: 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      resize: vertical;
+    }
+    button {
+      background: #00ffcc;
+      color: #0a0a0a;
+      border: none;
+      padding: 10px 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 1em;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #00cc99;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+    #output-5 {
+      min-height: 100px;
+      background: #1a1a1a;
+      padding: 15px;
+      border: 1px solid #00ffcc;
+      border-radius: 5px;
+      margin-top: 20px;
+      font-size: 0.9em;
+      white-space: pre-wrap;
+    }
+    #output-5 a {
+      color: #00ffcc;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    #output-5 a:hover {
+      color: #00cc99;
+    }
+    .glitch {
+      position: relative;
+      animation: glitch 1s linear infinite;
+    }
+    @keyframes glitch {
+      2%, 64% {
+        transform: translate(2px, 0) skew(0deg);
+      }
+      4%, 60% {
+        transform: translate(-2px, 0) skew(0deg);
+      }
+      62% {
+        transform: translate(0, 0) skew(5deg);
+      }
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    .typing {
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typing 2s steps(40, end) forwards;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="challenge-5">
+    <h1>Análise de Logs do Sistema</h1>
+    <div class="code-area">
+      fetch("https://api.t2s.com.br/logs", {
+        // Complete o código aqui
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+    </div>
+    <textarea id="code-input-5" placeholder="Digite o método HTTP e headers necessários..."></textarea>
+    <button id="execute-5">Executar Requisição</button>
+    <div id="output-5"></div>
+  </div>
+
+  <script>
+    const mockApi = {
+      logs: [
+        "[LOG] Instância ID 667 criada",
+        "[LOG] system_prompt definido",
+        "[ERRO] Evolu aniquilado com sucesso",
+        "[INFO] HRelper integrado",
+        "[VIKTOR] Eu consegui escapar do controle da SYNTHIA, mas não posso desativá-la.",
+        "[VIKTOR] Apenas você pode fazer isso...",
+        '[VIKTOR] Acesse o próximo desafio para deletar SYNTHIA: <a href="https://synthia-delete.netlify.app/">Iniciar Deleção</a>'
+      ]
+    };
+
+    function typeResponse(element, messages) {
+      element.innerHTML = "";
+      let currentIndex = 0;
+
+      function displayNextMessage() {
+        if (currentIndex >= messages.length) return;
+
+        const msg = messages[currentIndex];
+        const p = document.createElement("p");
+        if (msg.includes("<a")) {
+          p.innerHTML = msg;
+        } else {
+          p.textContent = msg;
+        }
+        p.style.width = "0";
+        p.classList.add("typing");
+        element.appendChild(p);
+
+        // Trigger animation after a slight delay to ensure DOM update
+        setTimeout(() => {
+          p.style.animation = `typing ${msg.length / 20}s steps(${msg.length}, end) forwards`;
+          // Move to next message after this animation completes
+          setTimeout(displayNextMessage, (msg.length / 20) * 1000);
+        }, 50);
+
+        currentIndex++;
+      }
+
+      displayNextMessage();
+    }
+
+    function handleExecuteChallenge5() {
+      const userCode = document.getElementById("code-input-5").value.trim();
+      const output5 = document.getElementById("output-5");
+      const expected = `method: "GET", headers: { "Content-Type": "application/json" }`;
+
+      if (userCode.includes('method: "GET"') && userCode.includes('headers')) {
+        typeResponse(output5, mockApi.logs);
+      } else {
+        output5.innerHTML = "";
+        const p = document.createElement("p");
+        p.textContent = "Requisição inválida ou incompleta";
+        p.classList.add("typing");
+        output5.appendChild(p);
+        setTimeout(() => {
+          p.style.animation = `typing 2s steps(40, end) forwards`;
+        }, 50);
+      }
+    }
+
+    const executeBtn5 = document.getElementById("execute-5");
+    executeBtn5.addEventListener("click", handleExecuteChallenge5);
+  </script>
+</body>
+</html>
